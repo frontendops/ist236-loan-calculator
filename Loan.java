@@ -8,15 +8,15 @@ import java.text.DecimalFormat;
 import java.util.Scanner;
 
 public class Loan {
+    public static Scanner console = new Scanner(System.in);
+    public static DecimalFormat df = new DecimalFormat("$#,##0.00");
 
     public static void main(String[] args) {
-        Scanner console = new Scanner(System.in);
-        DecimalFormat df = new DecimalFormat("$#,##0.00");
-        // declare user input variables
+        // Declare user input variables
         double amount;
         double APR;
         double years;
-
+        // Prompt user for info
         System.out.print("What is the amount of the loan? ");
         amount = console.nextDouble();
 
@@ -26,7 +26,7 @@ public class Loan {
         System.out.print("What is the APR? ");
         APR = console.nextDouble();
 
-        // declare variables used in table
+        // Declare variables used in table
         double monthlyInterest;
         double monthlyPayment;
         double totalMonths;
@@ -39,16 +39,21 @@ public class Loan {
         totalAmount = monthlyPayment * totalMonths;
 
         System.out.println("Your monthly payment is " + df.format(monthlyPayment) + " for a total payment of " + df.format(totalAmount));
-        
-        System.out.println("Payment \t Interest \t Principle \t Balance");
+        // Print and format the table header
+        System.out.println("Payment \t Interest \tPrinciple \tBalance");
+        System.out.println("======= \t ======== \t========= \t=======");
+
+        // Loop through months and print rows
         for (int i = 1; i < totalMonths + 1; i++) {
             // variables for the values in the string
-            double interestPaid = (monthlyInterest * totalAmount);
+            double interestPaid = (monthlyInterest * amount);
             double principlePaid = (monthlyPayment - interestPaid);
-            totalAmount = (totalAmount - principlePaid);
-            System.out.println(i + " \t\t " + df.format(interestPaid) + " \t" + df.format(principlePaid) + " \t" + df.format(totalAmount));
+            // upating the global amount variable
+            amount = (amount - principlePaid);
+            formattedRow(i, interestPaid, principlePaid, amount);
         }
-         // move after values above are calculated
-
+    }
+    public static void formattedRow(int i, double interestPaid, double principlePaid, double amount) {
+        System.out.println(i + " \t\t " + df.format(interestPaid) + "    \t" + df.format(principlePaid) + " \t" + df.format(amount));
     }
 }
